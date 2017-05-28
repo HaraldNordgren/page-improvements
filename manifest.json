@@ -8,9 +8,10 @@
   "content_scripts": [{
     "js": ["nordnet/nordnet.js"],
     "matches": ["https://www.nordnet.se/mux/web/handla/fonder/sparande/sparande.html"]
-  }],
-
-  "content_scripts": [{
+  }, {
+    "js": ["nordnet/manadsspar-color.js"],
+    "matches": ["https://www.nordnet.se/manadsspar"]
+  }, {
     "js": ["dagens-nyheter/dagens-nyheter.js"],
     "matches": ["http://www.dn.se/*/*/*"]
   }]

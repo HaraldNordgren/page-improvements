@@ -22,6 +22,5 @@ for (var i=1; i<funds.length; i++) {
 		(total_amount * percentage).toString() + " SEK");
 	node.appendChild(textnode);
 	
-	//fund.appendChild(node);
 	fund.insertBefore(node, tds[1])
 }
