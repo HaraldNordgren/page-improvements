@@ -6,9 +6,14 @@
   "description": "Improve page content with JavaScript.",
  
   "content_scripts": [{
-    //"css": ["styles.css"],
-    "js": ["nordnet.js"],
+    "js": ["nordnet/nordnet.js"],
     "matches": ["https://www.nordnet.se/mux/web/handla/fonder/sparande/sparande.html"]
+  }],
+
+  "content_scripts": [{
+    "js": ["dagens-nyheter/dagens-nyheter.js"],
+    "matches": ["http://www.dn.se/*/*/*"]
   }]
+
  
 }
