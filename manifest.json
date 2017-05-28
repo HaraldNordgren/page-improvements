@@ -1,0 +1,14 @@
+{
+  "manifest_version": 2,
+ 
+  "name": "Modify Nordnet, DN, etc.",
+  "version": "0.1",
+  "description": "Improve page content with JavaScript.",
+ 
+  "content_scripts": [{
+    //"css": ["styles.css"],
+    "js": ["nordnet.js"],
+    "matches": ["https://www.nordnet.se/mux/web/handla/fonder/sparande/sparande.html"]
+  }]
+ 
+}
