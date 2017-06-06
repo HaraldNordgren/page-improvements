@@ -14,7 +14,10 @@
   }, {
     "js": ["dagens-nyheter/dagens-nyheter.js"],
     "matches": ["http://www.dn.se/*/*/*"]
-  }]
+  }, {
+	"js": ["github/github.js"],
+	"matches": ["https://github.com/*/*/pull/*"]
+}]
 
  
 }
