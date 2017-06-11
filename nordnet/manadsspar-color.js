@@ -1,5 +1,5 @@
 var box = document.getElementsByClassName("monthlysavings-sum")[0];
-var amount_raw = box.getElementsByClassName("amount")[0].innerHTML;
+var amount_raw = box.getElementsByClassName("amount")[1].innerHTML;
 var total_amount = Number(amount_raw.replace(/[^0-9\.]+/g,""));
 
 var lis = box.getElementsByTagName("ul")[0].getElementsByTagName("li");
@@ -15,7 +15,7 @@ for (var i=0; i < lis.length; i++) {
 	var new_node = document.createElement("span");
 	new_node.className = "allocation";
 	var textnode = document.createTextNode(
-		(total_amount * percentage).toString() + " SEK"
+		Math.round((total_amount * percentage)).toString() + " SEK"
 	);
 	new_node.appendChild(textnode);
 	li.insertBefore(new_node, allocation_node);
