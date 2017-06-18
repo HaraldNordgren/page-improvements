@@ -1,13 +1,12 @@
-map = {}
+vardepapper_open = false
 
+map = {}
 $.ajax({
     url: "https://www.avanza.se/mina-sidor/manadsspara.html",
     async: false,
     success: function(data1) {
         
         parsed_data = $(new DOMParser().parseFromString(data1, 'text/html'));
-        //extratorrent_domain = "https://www.avanza.se";
-        //$('head', parsed_data).append('<base href="' + extratorrent_domain + '">');
 
         //source = document
         source = parsed_data[0]
@@ -24,7 +23,6 @@ $.ajax({
         	map[name] = percentage
         }
 }})
-//console.log(map)
 
 function getPart(el, index) {
 	return parseInt(el.
@@ -39,64 +37,72 @@ function appendTd(s, prevNode, index) {
 	prevNode.insertBefore(node, tr)
 }
 
-table = document.getElementsByClassName("positions")[0].
-	getElementsByTagName("table")[1]
+function addMontly() {
+	table = document.getElementsByClassName("positions")[0].
+		getElementsByTagName("table")[1]
 
-trs = table.
-	getElementsByTagName("tbody")[0].
-	getElementsByTagName("tr")
+	trs = table.
+		getElementsByTagName("tbody")[0].
+		getElementsByTagName("tr")
 
-total = 0
-for (i=0; i<trs.length; i++) {
-	title = trs[i].getElementsByClassName("instrumentName")[0].
-		getElementsByTagName("a")[0].title
-	//console.log(title)
-	//console.log(title in map)
-	if (!(title in map)) {
-		continue
-	}
+	total = 0
+	for (i=0; i<trs.length; i++) {
+		title = trs[i].getElementsByClassName("instrumentName")[0].
+			getElementsByTagName("a")[0].title
+		if (!(title in map)) {
+			continue
+		}
 
-	partSum = getPart(trs[i], 4)
-	total += partSum
-}
-
-for (i=0; i<trs.length; i++) {
-	title = trs[i].getElementsByClassName("instrumentName")[0].
-		getElementsByTagName("a")[0].title
-	
-	if (title in map) {
 		partSum = getPart(trs[i], 4)
-		percentage = parseFloat(partSum) / total * 100
-		
-		percentageDiff = percentage - map[title]
-		//s = percentage.toFixed(1) + "% (" + percentageDiff.toFixed(1) + "%)"
-		if(percentageDiff > 0){
-        	sign = "+"
-    	} else {
-    		sign = ""
-    	}
-		s = sign + percentageDiff.toFixed(1) + "%"
-
-	
-	} else {
-		s = ""
+		total += partSum
 	}
 
-	appendTd(s, trs[i], 4)
+	for (i=0; i<trs.length; i++) {
+		title = trs[i].getElementsByClassName("instrumentName")[0].
+			getElementsByTagName("a")[0].title
+		
+		if (title in map) {
+			partSum = getPart(trs[i], 4)
+			percentage = parseFloat(partSum) / total * 100
+			
+			percentageDiff = percentage - map[title]
+			//s = percentage.toFixed(1) + "% (" + percentageDiff.toFixed(1) + "%)"
+			if(percentageDiff > 0){
+	        	sign = "+"
+	    	} else {
+	    		sign = ""
+	    	}
+			s = sign + percentageDiff.toFixed(1) + "%"
 
+		
+		} else {
+			s = ""
+		}
 
-	/*
-	var node = document.createElement("td");
-	node.appendChild(document.createTextNode(s));
-	tr = trs[i].getElementsByClassName("tRight")[4]
-	trs[i].insertBefore(node, tr)
-	*/
+		appendTd(s, trs[i], 4)
+	}
+
+	appendTd("Månadsspar", table.
+		getElementsByTagName("thead")[0].
+		getElementsByTagName("tr")[0], 4)
+
+	appendTd("", table.
+		getElementsByTagName("tfoot")[0].
+		getElementsByTagName("tr")[0], 1)
 }
 
-appendTd("Månadsspar", table.
-	getElementsByTagName("thead")[0].
-	getElementsByTagName("tr")[0], 4)
+old_vardepapper_open = false
+MutationObserver = window.MutationObserver || window.WebKitMutationObserver;
+var observer = new MutationObserver(function(mutations, observer) {    
+	tableV2s = document.getElementsByClassName("solidRows tableV2 groupInstTypeTable marginTop30px")
+	vardepapper_open = tableV2s.length > 0
+	if (vardepapper_open && !old_vardepapper_open) {
+		addMontly()
+	}
+	old_vardepapper_open = vardepapper_open	
+});
 
-appendTd("", table.
-	getElementsByTagName("tfoot")[0].
-	getElementsByTagName("tr")[0], 1)
+observer.observe(document, {
+	subtree: true,
+	attributes: true
+});
