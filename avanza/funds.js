@@ -66,7 +66,6 @@ function addMonthly() {
 			percentageDiff = percentage - map[title]
 			sign = percentageDiff > 0 ? "+" : ""
 	    	if (Math.abs(percentageDiff) >= 1.5) {
-	    		//className += percentageDiff > 0 ? " positive" : " negative"
 	    		className += " negative"
 	    	}
 
@@ -74,7 +73,8 @@ function addMonthly() {
 			diffString = sign + stringFormatted + "%"
 
 			amount = (percentageDiff / 100 * total).toFixed(0)
-			ammountDiff = amount + " kr"
+            amount = amount.replace(/\B(?=(\d{3})+(?!\d))/g, " ")
+			ammountDiff = sign + amount + " kr"
 		}
 
 		appendNode(ammountDiff, trs[i], 4, "td", className)
