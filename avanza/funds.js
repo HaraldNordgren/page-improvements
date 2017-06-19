@@ -1,5 +1,3 @@
-vardepapper_open = false
-
 map = {}
 $.ajax({
     url: "https://www.avanza.se/mina-sidor/manadsspara.html",
@@ -7,37 +5,35 @@ $.ajax({
     success: function(data1) {
         
         parsed_data = $(new DOMParser().parseFromString(data1, 'text/html'));
-
-        //source = document
         source = parsed_data[0]
+        //source = document
 
         rows = source.getElementsByClassName("fundRow")
         for (i=1; i<rows.length; i++) {
-        	tds = rows[i].
-        		getElementsByTagName("td")
-
-        	name = tds[0].
-        		getElementsByTagName("a")[0].
-        		innerHTML
-        	percentage = parseFloat(tds[2].innerHTML.trim())
-        	map[name] = percentage
+        	tds = rows[i].getElementsByTagName("td")
+        	name = tds[0].getElementsByTagName("a")[0].innerHTML
+        	map[name] = parseFloat(tds[2].innerHTML.trim())
         }
 }})
 
 function getPart(el, index) {
-	return parseInt(el.
-		getElementsByClassName("tRight")[index].
-		innerHTML.
-		replace(/&nbsp;/g,''))}
+	return parseInt(
+		el.getElementsByClassName("tRight")[index].
+		innerHTML.replace(/&nbsp;/g,'')
+	)}
 
-function appendTd(s, prevNode, index) {
-	var node = document.createElement("td");
+function appendNode(s, prevNode, index, type="td", className=undefined) {
+	var node = document.createElement(type);
+	if (className) {
+		node.className = className
+	}
+
 	node.appendChild(document.createTextNode(s));
 	tr = prevNode.getElementsByClassName("tRight")[index]
 	prevNode.insertBefore(node, tr)
 }
 
-function addMontly() {
+function addMonthly() {
 	table = document.getElementsByClassName("positions")[0].
 		getElementsByTagName("table")[1]
 
@@ -49,44 +45,53 @@ function addMontly() {
 	for (i=0; i<trs.length; i++) {
 		title = trs[i].getElementsByClassName("instrumentName")[0].
 			getElementsByTagName("a")[0].title
-		if (!(title in map)) {
-			continue
+		
+		if (title in map) {
+			total += getPart(trs[i], 4)
 		}
-
-		partSum = getPart(trs[i], 4)
-		total += partSum
 	}
 
 	for (i=0; i<trs.length; i++) {
 		title = trs[i].getElementsByClassName("instrumentName")[0].
 			getElementsByTagName("a")[0].title
 		
+		className = "tRight"
+		diffString = ""
+		ammountDiff = ""
+
 		if (title in map) {
 			partSum = getPart(trs[i], 4)
 			percentage = parseFloat(partSum) / total * 100
 			
 			percentageDiff = percentage - map[title]
-			//s = percentage.toFixed(1) + "% (" + percentageDiff.toFixed(1) + "%)"
-			if(percentageDiff > 0){
-	        	sign = "+"
-	    	} else {
-	    		sign = ""
+			sign = percentageDiff > 0 ? "+" : ""
+	    	if (Math.abs(percentageDiff) >= 1.5) {
+	    		//className += percentageDiff > 0 ? " positive" : " negative"
+	    		className += " negative"
 	    	}
-			s = sign + percentageDiff.toFixed(1) + "%"
 
-		
-		} else {
-			s = ""
+	    	stringFormatted = percentageDiff.toFixed(1).replace(".", ",")
+			diffString = sign + stringFormatted + "%"
+
+			amount = (percentageDiff / 100 * total).toFixed(0)
+			ammountDiff = amount + " kr"
 		}
 
-		appendTd(s, trs[i], 4)
+		appendNode(ammountDiff, trs[i], 4, "td", className)
+		appendNode(diffString, trs[i], 4, "td", className)
 	}
 
-	appendTd("Månadsspar", table.
+	appendNode("Månadsspar", table.
 		getElementsByTagName("thead")[0].
-		getElementsByTagName("tr")[0], 4)
+		getElementsByTagName("tr")[0], 4, "th", "tRight")
+	appendNode("Månadsspar", table.
+		getElementsByTagName("thead")[0].
+		getElementsByTagName("tr")[0], 4, "th", "tRight")
 
-	appendTd("", table.
+	appendNode("", table.
+		getElementsByTagName("tfoot")[0].
+		getElementsByTagName("tr")[0], 1)
+	appendNode("", table.
 		getElementsByTagName("tfoot")[0].
 		getElementsByTagName("tr")[0], 1)
 }
@@ -97,7 +102,7 @@ var observer = new MutationObserver(function(mutations, observer) {
 	tableV2s = document.getElementsByClassName("solidRows tableV2 groupInstTypeTable marginTop30px")
 	vardepapper_open = tableV2s.length > 0
 	if (vardepapper_open && !old_vardepapper_open) {
-		addMontly()
+		addMonthly()
 	}
 	old_vardepapper_open = vardepapper_open	
 });
