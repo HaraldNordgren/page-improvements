@@ -1,4 +1,5 @@
 map = {}
+currentOrders = {}
 $.ajax({
     url: "https://www.avanza.se/mina-sidor/manadsspara.html",
     async: false,
@@ -13,8 +14,24 @@ $.ajax({
         	tds = rows[i].getElementsByTagName("td")
         	name = tds[0].getElementsByTagName("a")[0].innerHTML
         	map[name] = parseFloat(tds[2].innerHTML.trim())
+        	currentOrders[name] = 0
         }
 }})
+
+currentTrs = document.
+	getElementsByClassName("currentOrdersTable")[1].
+	getElementsByTagName("tbody")[0].
+	getElementsByTagName("tr")
+
+for (i=0; i<currentTrs.length; i++) {
+	row = currentTrs[i]
+	if (row.getAttribute("data-ordertype") == "Köp") {
+		title = row.getAttribute("data-orderbookname")
+		amount = parseInt(row.getAttribute("data-price"))
+		currentOrders[title] += amount
+	}
+}
+//console.log(currentOrders)
 
 function getPart(el, index) {
 	return parseInt(
@@ -47,7 +64,7 @@ function addMonthly() {
 			getElementsByTagName("a")[0].title
 		
 		if (title in map) {
-			total += getPart(trs[i], 4)
+			total += getPart(trs[i], 4) + currentOrders[title]
 		}
 	}
 
@@ -60,12 +77,12 @@ function addMonthly() {
 		ammountDiff = ""
 
 		if (title in map) {
-			partSum = getPart(trs[i], 4)
+			partSum = getPart(trs[i], 4) + currentOrders[title]
 			percentage = parseFloat(partSum) / total * 100
 			
 			percentageDiff = percentage - map[title]
 			sign = percentageDiff > 0 ? "+" : ""
-	    	if (Math.abs(percentageDiff) >= 1.5) {
+	    	if (Math.abs(percentageDiff) >= 0.8) {
 	    		className += " negative"
 	    	}
 
@@ -81,19 +98,14 @@ function addMonthly() {
 		appendNode(diffString, trs[i], 4, "td", className)
 	}
 
-	appendNode("Månadsspar", table.
-		getElementsByTagName("thead")[0].
-		getElementsByTagName("tr")[0], 4, "th", "tRight")
-	appendNode("Månadsspar", table.
-		getElementsByTagName("thead")[0].
-		getElementsByTagName("tr")[0], 4, "th", "tRight")
-
-	appendNode("", table.
-		getElementsByTagName("tfoot")[0].
-		getElementsByTagName("tr")[0], 1)
-	appendNode("", table.
-		getElementsByTagName("tfoot")[0].
-		getElementsByTagName("tr")[0], 1)
+	for (i=0; i<2; i++) {
+		appendNode("Månadsspar", table.
+			getElementsByTagName("thead")[0].
+			getElementsByTagName("tr")[0], 4, "th", "tRight")
+		appendNode("", table.
+			getElementsByTagName("tfoot")[0].
+			getElementsByTagName("tr")[0], 1)
+	}
 }
 
 old_vardepapper_open = false
