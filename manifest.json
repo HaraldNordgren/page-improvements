@@ -7,10 +7,10 @@
  
   "content_scripts": [
     {
-      "js": ["nordnet/nordnet.js"],
+      "js": ["nordnet/manadsspar-detailed.js"],
       "matches": ["https://www.nordnet.se/mux/web/handla/fonder/sparande/sparande.html"]
     }, {
-      "js": ["nordnet/manadsspar-color.js"],
+      "js": ["nordnet/manadsspar-overview-fancy.js"],
       "matches": ["https://www.nordnet.se/manadsspar"]
     }, {
       "js": ["dagens-nyheter/dagens-nyheter.js"],
