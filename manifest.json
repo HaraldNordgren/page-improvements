@@ -13,6 +13,12 @@
       "js": ["nordnet/manadsspar-overview-fancy.js"],
       "matches": ["https://www.nordnet.se/manadsspar"]
     }, {
+      "js": [
+        "jquery-3.2.1.js",
+        "nordnet/depa-overview.js"
+      ],
+      "matches": ["https://www.nordnet.se/mux/web/depa/mindepa/depaoversikt.html"]
+    }, {
       "js": ["dagens-nyheter/dagens-nyheter.js"],
       "matches": ["http://www.dn.se/*/*/*"]
     }, {
