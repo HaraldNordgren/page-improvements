@@ -31,11 +31,10 @@ for (i=0; i<currentTrs.length; i++) {
 		currentOrders[title] += amount
 	}
 }
-//console.log(currentOrders)
 
-function getPart(el, index) {
+function getPart(el) {
 	return parseInt(
-		el.getElementsByClassName("tRight")[index].
+		el.getElementsByClassName("tRight")[5].
 		innerHTML.replace(/&nbsp;/g,'')
 	)}
 
@@ -64,7 +63,7 @@ function addMonthly() {
 			getElementsByTagName("a")[0].title
 		
 		if (title in map) {
-			total += getPart(trs[i], 4) + currentOrders[title]
+			total += getPart(trs[i]) + currentOrders[title]
 		}
 	}
 
@@ -77,7 +76,7 @@ function addMonthly() {
 		ammountDiff = ""
 
 		if (title in map) {
-			partSum = getPart(trs[i], 4) + currentOrders[title]
+			partSum = getPart(trs[i]) + currentOrders[title]
 			percentage = parseFloat(partSum) / total * 100
 			
 			percentageDiff = percentage - map[title]
@@ -99,9 +98,9 @@ function addMonthly() {
 	}
 
 	for (i=0; i<2; i++) {
-		appendNode("Månadsspar", table.
+		appendNode("M", table.
 			getElementsByTagName("thead")[0].
-			getElementsByTagName("tr")[0], 4, "th", "tRight")
+			getElementsByTagName("tr")[0], 3, "th", "tRight")
 		appendNode("", table.
 			getElementsByTagName("tfoot")[0].
 			getElementsByTagName("tr")[0], 1)
@@ -110,8 +109,8 @@ function addMonthly() {
 
 old_vardepapper_open = false
 MutationObserver = window.MutationObserver || window.WebKitMutationObserver;
-var observer = new MutationObserver(function(mutations, observer) {    
-	tableV2s = document.getElementsByClassName("solidRows tableV2 groupInstTypeTable marginTop30px")
+var observer = new MutationObserver(function(mutations, observer) {
+	tableV2s = document.getElementsByClassName("solidRows tableV2 groupInstTypeTable")
 	vardepapper_open = tableV2s.length > 0
 	if (vardepapper_open && !old_vardepapper_open) {
 		addMonthly()

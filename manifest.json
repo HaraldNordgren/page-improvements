@@ -29,7 +29,7 @@
         "jquery-3.2.1.js",
         "avanza/funds.js"
       ],
-      "matches": ["https://www.avanza.se/mina-sidor/kontooversikt.html"]
+      "matches": ["https://www.avanza.se/mina-sidor/kontooversikt.*html"]
     }
   ]
 }
