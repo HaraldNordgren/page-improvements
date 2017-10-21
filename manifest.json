@@ -20,7 +20,7 @@
       "matches": ["https://www.nordnet.se/mux/web/depa/mindepa/depaoversikt.html"]
     }, {
       "js": ["dagens-nyheter/dagens-nyheter.js"],
-      "matches": ["http://www.dn.se/*/*/*"]
+      "matches": ["*://www.dn.se/*/*/*"]
     }, {
       "js": ["github/github.js"],
       "matches": ["https://github.com/*/*/pull/*"]
