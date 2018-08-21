@@ -21,15 +21,12 @@
     }, {
       "js": ["dagens-nyheter/dagens-nyheter.js"],
       "matches": ["*://www.dn.se/*/*/*"]
-    }, {
-      "js": ["github/github.js"],
-      "matches": ["https://github.com/*/*/pull/*"]
-    }, {
+    /*}, {
       "js": [
         "jquery-3.2.1.js",
         "avanza/funds.js"
       ],
-      "matches": ["https://www.avanza.se/mina-sidor/kontooversikt.*html"]
+      "matches": ["https://www.avanza.se/mina-sidor/kontooversikt.*html"]*/
     }
   ]
 }
